@@ -1,12 +1,2 @@
-Futures to ADD in SMIC
------------------------
-1. Search box based on person's latest news and press conference and anything based on latest, location, Area, and latest full update in trends.
-2. script should be in 200 to 500 words or less then.
-3. when I'm generating the script, unfortunately if script exceeded it should be start from script it self not from trends or anything else.
-4. when I enter villages or towns or cities names it should be show the related names, before that user or anyone need to select the country, after they wish to enter state, and city. 
-5. when I enter the name it should be search hashtags(#) and related to the name everything.
 
-6. [pipeline/scripts] Error: timeout of 30000ms exceeded getting this error.
-7. Add a future optional like generated script to video, and here user upload images of characters and assign like 1st image main character and 2nd image another character and 3rd, 4th, etc..., and background voice also should be work with lip movement and download option . for that video what are API's required.
-8. The calendar should be like Indian calendar for Indians with festivals and leaves  . different kinds of calendars based on countries. and schedule content button and Add content button needs to work.
 
