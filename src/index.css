@@ -1,0 +1,207 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* SMIC Design System - Bold, Electric, Creator-focused */
+
+@layer base {
+  :root {
+    /* Core palette - Electric purple with warm coral accents */
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 10% 6%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 10% 6%;
+    --popover-foreground: 0 0% 98%;
+
+    /* Electric purple primary */
+    --primary: 270 91% 65%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Coral secondary */
+    --secondary: 15 90% 65%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 240 10% 12%;
+    --muted-foreground: 240 5% 55%;
+
+    /* Teal accent */
+    --accent: 175 70% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 240 10% 15%;
+    --input: 240 10% 15%;
+    --ring: 270 91% 65%;
+
+    --radius: 0.75rem;
+
+    /* Sidebar tokens */
+    --sidebar-background: 240 10% 5%;
+    --sidebar-foreground: 240 5% 65%;
+    --sidebar-primary: 270 91% 65%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 10% 10%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 240 10% 12%;
+    --sidebar-ring: 270 91% 65%;
+
+    /* Extended palette */
+    --success: 145 70% 50%;
+    --success-foreground: 0 0% 100%;
+    --warning: 45 100% 55%;
+    --warning-foreground: 0 0% 10%;
+    --info: 210 100% 60%;
+    --info-foreground: 0 0% 100%;
+
+    /* Score colors */
+    --score-high: 145 70% 50%;
+    --score-medium: 45 100% 55%;
+    --score-low: 0 84% 60%;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(270 91% 65%), hsl(300 91% 55%));
+    --gradient-secondary: linear-gradient(135deg, hsl(15 90% 65%), hsl(35 90% 60%));
+    --gradient-accent: linear-gradient(135deg, hsl(175 70% 50%), hsl(195 70% 55%));
+    --gradient-dark: linear-gradient(180deg, hsl(240 10% 6%), hsl(240 10% 3.9%));
+
+    /* Shadows */
+    --shadow-glow: 0 0 20px hsl(270 91% 65% / 0.3);
+    --shadow-card: 0 4px 20px hsl(0 0% 0% / 0.3);
+  }
+
+  /* Light mode - creators mostly work at night, but we support light too */
+  .light {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+
+    --primary: 270 91% 55%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 15 85% 58%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 5% 40%;
+
+    --accent: 175 65% 45%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 240 5% 90%;
+    --input: 240 5% 90%;
+    --ring: 270 91% 55%;
+
+    --sidebar-background: 240 5% 98%;
+    --sidebar-foreground: 240 5% 30%;
+    --sidebar-primary: 270 91% 55%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 5% 94%;
+    --sidebar-accent-foreground: 240 10% 3.9%;
+    --sidebar-border: 240 5% 90%;
+    --sidebar-ring: 270 91% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--muted));
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground) / 0.3);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.5);
+  }
+}
+
+@layer utilities {
+  /* Gradient text utility */
+  .text-gradient-primary {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-secondary {
+    background: var(--gradient-secondary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Glow effects */
+  .glow-primary {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .glow-primary-hover:hover {
+    box-shadow: 0 0 30px hsl(270 91% 65% / 0.4);
+  }
+
+  /* Score indicator colors */
+  .score-high {
+    color: hsl(var(--score-high));
+  }
+
+  .score-medium {
+    color: hsl(var(--score-medium));
+  }
+
+  .score-low {
+    color: hsl(var(--score-low));
+  }
+
+  /* Glass morphism */
+  .glass {
+    background: hsl(var(--card) / 0.8);
+    backdrop-filter: blur(12px);
+    border: 1px solid hsl(var(--border) / 0.5);
+  }
+
+  /* Animation utilities */
+  .animate-SMIC-slow {
+    animation: SMIC 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+}

@@ -1,0 +1,102 @@
+version: '3.8'
+
+services:
+  # MongoDB
+  mongo:
+    image: mongo:7
+    container_name: SMIC_pro_mongo
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER:-admin}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:?Set MONGO_PASSWORD in .env}
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - SMIC_network
+
+  # PostgreSQL
+  postgres:
+    image: postgres:16-alpine
+    container_name: SMIC_pro_postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${PGUSER:-postgres}
+      POSTGRES_PASSWORD: ${PGPASSWORD:?Set PGPASSWORD in .env}
+      POSTGRES_DB: ${PGDATABASE:-SMIC_pro}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - SMIC_network
+
+  # pgAdmin (PostgreSQL GUI)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: SMIC_pro_pgadmin
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@SMIC.dev}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:?Set PGADMIN_PASSWORD in .env}
+    depends_on:
+      - postgres
+    networks:
+      - SMIC_network
+
+  # Backend Server
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    container_name: SMIC_pro_backend
+    ports:
+      - "4000:4000"
+    environment:
+      PORT: 4000
+      MONGODB_URI: mongodb://${MONGO_USER:-admin}:${MONGO_PASSWORD}@mongo:27017/SMIC_pro?authSource=admin
+      PGHOST: postgres
+      PGUSER: ${PGUSER:-postgres}
+      PGPASSWORD: ${PGPASSWORD}
+      PGDATABASE: ${PGDATABASE:-SMIC_pro}
+      PGPORT: 5432
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in .env (min 32 chars)}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      INSTAGRAM_API_KEY: ${INSTAGRAM_API_KEY}
+      YOUTUBE_API_KEY: ${YOUTUBE_API_KEY}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000}
+      NODE_ENV: production
+    depends_on:
+      - mongo
+      - postgres
+    networks:
+      - SMIC_network
+
+  # Frontend
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: SMIC_pro_frontend
+    ports:
+      - "3000:3000"
+    environment:
+      # When the frontend is served to a browser, the browser must reach the backend host.
+      # Use the host's address here so the browser can call the backend at http://localhost:4000.
+      # If deploying to a remote host, set this to your backend URL (e.g. https://api.example.com)
+      VITE_BACKEND_URL: http://localhost:4000
+      VITE_SUPABASE_PROJECT_ID: ${VITE_SUPABASE_PROJECT_ID:?Set VITE_SUPABASE_PROJECT_ID in .env}
+      VITE_SUPABASE_PUBLISHABLE_KEY: ${VITE_SUPABASE_PUBLISHABLE_KEY:?Set VITE_SUPABASE_PUBLISHABLE_KEY in .env}
+      VITE_SUPABASE_URL: ${VITE_SUPABASE_URL:?Set VITE_SUPABASE_URL in .env}
+    depends_on:
+      - backend
+    networks:
+      - SMIC_network
+
+volumes:
+  mongo_data:
+  postgres_data:
+
+networks:
+  SMIC_network:
+    driver: bridge
